@@ -217,14 +217,33 @@ function woocommerce_gateway_ceca_init() {
                 .$this->get_return_url( $order )
                 .$this->get_return_url( $order );
 
+            $signature_str2 = urlencode($signature_str);
+
             echo "
                 <script>
-                    console.log('".$signature_str."');
-                    console.log('".hash('sha256', $signature_str)."');
+                    console.log('Clave encriptacion: ".$this->password."');
+                    console.log('MerchantID: ".$this->merchand_id."');
+                    console.log('AcquirerBIN: ".$this->acquirer_bin."');
+                    console.log('TerminalID: ".$this->terminal_id."');
+                    console.log('Número operación: ".$order->id."');
+                    console.log('Importe: ".($order->get_total()*100)."');
+                    console.log('Tipo de moneda: ".$this->currency."');
+                    console.log('Exponente: ".""."');
+                    console.log('Referencia: ".""."');
+                    console.log('Página: ".""."');
+                    console.log('SHA2: "."2SHA1"."');
+                    console.log('Url online OK: ".$this->get_return_url( $order )."');
+                    console.log('Url online NOK: ".$this->get_return_url( $order )."');
+
+                    console.log('Texto a firmar: ".$signature_str."');
+                    console.log('Firma: ".hash('sha256', $signature_str)."');
+
+                    console.log('Texto a firmar (urlencode): ".$signature_str2."');
+                    console.log('Firma (urlencode): ".hash('sha256', $signature_str2)."');
                 </script>
             ";
 
-            return hash('sha256', $signature_str);
+            return hash('sha256', $signature_str2);
         }
 
         function get_ceca_args( $order ) {
