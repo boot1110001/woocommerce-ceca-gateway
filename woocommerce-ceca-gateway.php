@@ -217,30 +217,14 @@ function woocommerce_gateway_ceca_init() {
                 .$this->get_return_url( $order )
                 .$this->get_return_url( $order );
 
-            $signature_str2 = $this->password
-                .$this->merchand_id
-                .$this->acquirer_bin
-                .$this->terminal_id
-                .$order->id
-                .$order->get_total()*100
-                .$this->currency
-                .'2SHA1'
-                .urlencode($this->get_return_url( $order ))
-                .urlencode($this->get_return_url( $order ));
-
             echo "
                 <script>
                     console.log('".$signature_str."');
-                    console.log('".sha1($signature_str)."');
                     console.log('".hash('sha256', $signature_str)."');
-
-                    console.log('".$signature_str2."');
-                    console.log('".sha1($signature_str2)."');
-                    console.log('".hash('sha256', $signature_str2)."');
                 </script>
             ";
 
-            return sha1($signature_str);
+            return hash('sha256', $signature_str);
         }
 
         function get_ceca_args( $order ) {
