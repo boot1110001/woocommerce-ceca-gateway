@@ -6,28 +6,30 @@ Description: Extends WooCommerce with an Ceca gateway.
 Version: 1.0
 Author: juanmirod
 Author URI: http://juanmirodriguez.es/
- 
+
+Mods by: inoro (github.com/boot1110001)
+
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
- 
+
 add_action('plugins_loaded', 'woocommerce_gateway_ceca_init', 0);
- 
+
 function woocommerce_gateway_ceca_init() {
- 
+
     if ( !class_exists( 'WC_Payment_Gateway' ) ) return;
- 
+
     /**
      * Localization - NOT AVAILABLE YET
      */
     // load_plugin_textdomain('wc-gateway-ceca', false, dirname( plugin_basename( __FILE__ ) ) . '/languages');
-    
+
     /**
      * Gateway class
      */
     class WC_Gateway_Ceca extends WC_Payment_Gateway {
-    
+
         public function __construct() {
             $this->id = 'ceca';
             $this->icon = '';
@@ -38,7 +40,7 @@ function woocommerce_gateway_ceca_init() {
             $this->init_form_fields();
             $this->init_settings();
 
-            // Define user set variables            
+            // Define user set variables
             $this->title        = $this->get_option( 'title' );
             $this->description  = $this->get_option( 'description' );
             $this->merchand_id  = $this->get_option( 'merchand_id' );
@@ -96,7 +98,7 @@ function woocommerce_gateway_ceca_init() {
 
             $order_id   = $posted['Num_operacion'];
 
-            if(empty($posted['Importe']) 
+            if(empty($posted['Importe'])
                || empty( $posted['Referencia'])
                || empty( $posted['Num_operacion']) ) {
                 wp_die( "ERROR", "CECABANK", array( 'response' => 200 ) );
@@ -176,10 +178,10 @@ function woocommerce_gateway_ceca_init() {
                     'description' => __('Selecciona el idioma en el que se mostrará la pasarela de pago.'),
                     'default' => '1',
                     'options' => array(
-                        '1' => __('Español'), 
-                        '2' => __('Catalán'), 
-                        '3' => __('Euskera'), 
-                        '4' => __('Gallego'), 
+                        '1' => __('Español'),
+                        '2' => __('Catalán'),
+                        '3' => __('Euskera'),
+                        '4' => __('Gallego'),
                         '5' => __('Valenciano'),
                         '6' => __('Inglés'),
                         '7' => __('Francés'),
@@ -188,7 +190,7 @@ function woocommerce_gateway_ceca_init() {
                         '10' => __('Italiano'),
                         '14' => __('Ruso'),
                         '15' => __('Noruego')
-                    ) 
+                    )
                 )
             );
         }
@@ -203,6 +205,7 @@ function woocommerce_gateway_ceca_init() {
 
             // Clave_encriptacion+MerchantID+AcquirerBIN+TerminalID+Num_operacion+Importe+
             // TipoMoneda+Exponente+“SHA1”+URL_OK+URL_NOK
+
             $signature_str = $this->password
                 .$this->merchand_id
                 .$this->acquirer_bin
@@ -213,6 +216,29 @@ function woocommerce_gateway_ceca_init() {
                 .'2SHA1'
                 .$this->get_return_url( $order )
                 .$this->get_return_url( $order );
+
+            $signature_str2 = $this->password
+                .$this->merchand_id
+                .$this->acquirer_bin
+                .$this->terminal_id
+                .$order->id
+                .$order->get_total()*100
+                .$this->currency
+                .'2SHA1'
+                .urlencode($this->get_return_url( $order ))
+                .urlencode($this->get_return_url( $order ));
+
+            echo "
+                <script>
+                    console.log('".$signature_str."');
+                    console.log('".sha1($signature_str)."');
+                    console.log('".hash('sha256', $signature_str)."');
+
+                    console.log('".$signature_str2."');
+                    console.log('".sha1($signature_str2)."');
+                    console.log('".hash('sha256', $signature_str2)."');
+                </script>
+            ";
 
             return sha1($signature_str);
         }
@@ -236,7 +262,7 @@ function woocommerce_gateway_ceca_init() {
 
             return $result;
         }
-        
+
         /**
          * Generate the CECA button link
          *
@@ -258,12 +284,13 @@ function woocommerce_gateway_ceca_init() {
             }
 
        /*     wc_enqueue_js( '
-   if (alert ("Gracias por su pedido, recuerde que debe introducir la fecha de caducidad de su tarjeta en formato AAAAMM. Por ejemplo, si su tarjeta caduca en Julio de 2015, debera introducir 201507 como fecha de caducidad. Gracias.")){ ; 
-jQuery("#submit_ceca_payment_form").click();       
+   if (alert ("Gracias por su pedido, recuerde que debe introducir la fecha de caducidad de su tarjeta en formato AAAAMM. Por ejemplo, si su tarjeta caduca en Julio de 2015, debera introducir 201507 como fecha de caducidad. Gracias.")){ ;
+jQuery("#submit_ceca_payment_form").click();
 }
             ' );
 */
-            return '<form action="' . esc_url( $this->ceca_url ) . '" method="post" id="ceca_payment_form" target="_top">
+            // return '<form action="' . esc_url( $this->ceca_url ) . '" method="post" id="ceca_payment_form" target="_top">
+            return '<form action="' . esc_url( $this->ceca_url ) . '" method="get" id="ceca_payment_form" target="_top">
                     ' . implode( '', $ceca_args_array ) . '
                     <!-- Button Fallback -->
                     <div class="payment_buttons">
@@ -280,17 +307,17 @@ jQuery("#submit_ceca_payment_form").click();
             global $woocommerce;
 
             $order = new WC_Order( $order_id );
-            
+
             return array(
                 'result'    => 'success',
                 'redirect'  => $order->get_checkout_payment_url( true )
             );
-            
+
         }
 
 
     }
-    
+
     /**
     * Add the Gateway to WooCommerce
     **/
@@ -298,6 +325,6 @@ jQuery("#submit_ceca_payment_form").click();
         $methods[] = 'WC_Gateway_Ceca';
         return $methods;
     }
-    
+
     add_filter('woocommerce_payment_gateways', 'woocommerce_add_gateway_ceca' );
-} 
+}
