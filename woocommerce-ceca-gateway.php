@@ -1,6 +1,6 @@
 <?php
 
-$URL_NOK = 'https://www.belateguiregueiro.com/brtienda/pago-cancelado/'
+// $URL_NOK = 'nada';
 
 /*
 Plugin Name: WooCommerce Ceca Gateway
@@ -219,7 +219,7 @@ function woocommerce_gateway_ceca_init() {
                 .'2'
                 .'SHA2'
                 .$this->get_return_url( $order )
-                .$this->$URL_NOK;
+                .$this->get_return_url( $order );
 
             // $signature_str2 = urlencode($signature_str);
 
@@ -237,7 +237,7 @@ function woocommerce_gateway_ceca_init() {
                     //console.log('Página: ".""."');
                     console.log('SHA2: "."SHA2"."');
                     console.log('Url online OK: ".$this->get_return_url( $order )."');
-                    console.log('Url online NOK: ".$URL_NOK."');
+                    console.log('Url online NOK: ".$this->get_return_url( $order )."');
 
                     console.log('Texto a firmar: ".$signature_str."');
                     console.log('Firma: ".hash('sha256', $signature_str)."');
@@ -257,7 +257,7 @@ function woocommerce_gateway_ceca_init() {
             $result['AcquirerBIN']      = $this->acquirer_bin;
             $result['TerminalID']       = $this->terminal_id;
             $result['URL_OK']           = $this->get_return_url( $order );
-            $result['URL_NOK']          = $URL_NOK;
+            $result['URL_NOK']          = $this->get_return_url( $order );
             $result['Firma']            = $this->calculate_sign( $order );
             $result['Cifrado']          = 'SHA2';
             $result['Num_operacion']    = $order->id;
