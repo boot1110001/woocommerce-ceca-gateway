@@ -1,4 +1,7 @@
 <?php
+
+$URL_NOK = "https://www.belateguiregueiro.com/brtienda/pago-cancelado/"
+
 /*
 Plugin Name: WooCommerce Ceca Gateway
 Plugin URI: http://woothemes.com/woocommerce
@@ -216,30 +219,30 @@ function woocommerce_gateway_ceca_init() {
                 .'2'
                 .'SHA2'
                 .$this->get_return_url( $order )
-                .$this->get_return_url( $order );
+                .$this->$URL_NOK;
 
             // $signature_str2 = urlencode($signature_str);
 
-            // echo "
-            //     <script>
-            //         console.log('Clave encriptacion: ".$this->password."');
-            //         console.log('MerchantID: ".$this->merchand_id."');
-            //         console.log('AcquirerBIN: ".$this->acquirer_bin."');
-            //         console.log('TerminalID: ".$this->terminal_id."');
-            //         console.log('Número operación: ".$order->id."');
-            //         console.log('Importe: ".($order->get_total()*100)."');
-            //         console.log('Tipo de moneda: ".$this->currency."');
-            //         console.log('Exponente: "."2"."');
-            //         //console.log('Referencia: ".""."');
-            //         //console.log('Página: ".""."');
-            //         console.log('SHA2: "."SHA2"."');
-            //         console.log('Url online OK: ".$this->get_return_url( $order )."');
-            //         console.log('Url online NOK: ".$this->get_return_url( $order )."');
-            //
-            //         console.log('Texto a firmar: ".$signature_str."');
-            //         console.log('Firma: ".hash('sha256', $signature_str)."');
-            //     </script>
-            // ";
+            echo "
+                <script>
+                    console.log('Clave encriptacion: ".$this->password."');
+                    console.log('MerchantID: ".$this->merchand_id."');
+                    console.log('AcquirerBIN: ".$this->acquirer_bin."');
+                    console.log('TerminalID: ".$this->terminal_id."');
+                    console.log('Número operación: ".$order->id."');
+                    console.log('Importe: ".($order->get_total()*100)."');
+                    console.log('Tipo de moneda: ".$this->currency."');
+                    console.log('Exponente: "."2"."');
+                    //console.log('Referencia: ".""."');
+                    //console.log('Página: ".""."');
+                    console.log('SHA2: "."SHA2"."');
+                    console.log('Url online OK: ".$this->get_return_url( $order )."');
+                    console.log('Url online NOK: ".$this->$URL_NOK."');
+
+                    console.log('Texto a firmar: ".$signature_str."');
+                    console.log('Firma: ".hash('sha256', $signature_str)."');
+                </script>
+            ";
 
             //console.log('Texto a firmar (urlencode): ".$signature_str2."');
             //console.log('Firma (urlencode): ".hash('sha256', $signature_str2)."');
@@ -254,7 +257,7 @@ function woocommerce_gateway_ceca_init() {
             $result['AcquirerBIN']      = $this->acquirer_bin;
             $result['TerminalID']       = $this->terminal_id;
             $result['URL_OK']           = $this->get_return_url( $order );
-            $result['URL_NOK']          = $this->get_return_url( $order );
+            $result['URL_NOK']          = $this->$URL_NOK;
             $result['Firma']            = $this->calculate_sign( $order );
             $result['Cifrado']          = 'SHA2';
             $result['Num_operacion']    = $order->id;
