@@ -219,26 +219,26 @@ function woocommerce_gateway_ceca_init() {
 
             // $signature_str2 = urlencode($signature_str);
 
-            // echo "
-            //     <script>
-            //         console.log('Clave encriptacion: ".$this->password."');
-            //         console.log('MerchantID: ".$this->merchand_id."');
-            //         console.log('AcquirerBIN: ".$this->acquirer_bin."');
-            //         console.log('TerminalID: ".$this->terminal_id."');
-            //         console.log('Número operación: ".$order->id."');
-            //         console.log('Importe: ".($order->get_total()*100)."');
-            //         console.log('Tipo de moneda: ".$this->currency."');
-            //         console.log('Exponente: "."2"."');
-            //         //console.log('Referencia: ".""."');
-            //         //console.log('Página: ".""."');
-            //         console.log('SHA2: "."SHA2"."');
-            //         console.log('Url online OK: ".$this->get_return_url( $order )."');
-            //         console.log('Url online NOK: ".$this->get_return_url( $order )."');
-            //
-            //         console.log('Texto a firmar: ".$signature_str."');
-            //         console.log('Firma: ".hash('sha256', $signature_str)."');
-            //     </script>
-            // ";
+            echo "
+                <script>
+                    console.log('Clave encriptacion: ".$this->password."');
+                    console.log('MerchantID: ".$this->merchand_id."');
+                    console.log('AcquirerBIN: ".$this->acquirer_bin."');
+                    console.log('TerminalID: ".$this->terminal_id."');
+                    console.log('Número operación: ".$order->id."');
+                    console.log('Importe: ".($order->get_total()*100)."');
+                    console.log('Tipo de moneda: ".$this->currency."');
+                    console.log('Exponente: "."2"."');
+                    //console.log('Referencia: ".""."');
+                    //console.log('Página: ".""."');
+                    console.log('SHA2: "."SHA2"."');
+                    console.log('Url online OK: ".$this->get_return_url( $order )."');
+                    console.log('Url online NOK: ".$this->get_return_url( $order )."');
+
+                    console.log('Texto a firmar: ".$signature_str."');
+                    console.log('Firma: ".hash('sha256', $signature_str)."');
+                </script>
+            ";
 
             //console.log('Texto a firmar (urlencode): ".$signature_str2."');
             //console.log('Firma (urlencode): ".hash('sha256', $signature_str2)."');
@@ -292,7 +292,7 @@ jQuery("#submit_ceca_payment_form").click();
 }
             ' );
 */
-            // return '<form action="' . esc_url( $this->ceca_url ) . '" method="post" id="ceca_payment_form" target="_top">
+            // return '<form action="' . esc_url( $this->ceca_url ) . '" method="get" id="ceca_payment_form" target="_top">
             return '<form action="' . esc_url( $this->ceca_url ) . '" method="post" id="ceca_payment_form" target="_top">
                     ' . implode( '', $ceca_args_array ) . '
                     <!-- Button Fallback -->
