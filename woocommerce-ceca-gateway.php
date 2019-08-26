@@ -49,11 +49,12 @@ function woocommerce_gateway_ceca_init() {
             $this->currency     = $this->get_option( 'currency' );
             $this->language     = $this->get_option( 'language' );
             $this->debug        = $this->get_option( 'debug' ) == 'yes';
-            $this->ceca_url = 'https://pgw.ceca.es/cgi-bin/tpv';
 
             if($this->debug) {
+                $this->ceca_url = 'https://tpv.ceca.es:8000/cgi-bin/tpv';
                 $this->password     = $this->get_option( 'password_debug' );
             } else {
+                $this->ceca_url = 'https://pgw.ceca.es/cgi-bin/tpv';
                 $this->password     = $this->get_option( 'password' );
             }
 
