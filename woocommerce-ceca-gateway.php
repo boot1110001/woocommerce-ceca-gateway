@@ -294,7 +294,7 @@ jQuery("#submit_ceca_payment_form").click();
             ' );
 */
             // return '<form action="' . esc_url( $this->ceca_url ) . '" method="post" id="ceca_payment_form" target="_top">
-            return '<form action="' . esc_url( $this->ceca_url ) . '" method="get" id="ceca_payment_form" target="_top">
+            return '<form action="' . esc_url( $this->ceca_url ) . '" method="post" id="ceca_payment_form" target="_top">
                     ' . implode( '', $ceca_args_array ) . '
                     <!-- Button Fallback -->
                     <div class="payment_buttons">
