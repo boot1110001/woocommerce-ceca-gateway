@@ -45,6 +45,7 @@ function woocommerce_gateway_ceca_init() {
             $this->merchand_id  = $this->get_option( 'merchand_id' );
             $this->acquirer_bin = $this->get_option( 'acquirer_bin' );
             $this->terminal_id  = $this->get_option( 'terminal_id' );
+            $this->url_nok      = $this->get_option( 'url_nok' );
             $this->currency     = $this->get_option( 'currency' );
             $this->language     = $this->get_option( 'language' );
             $this->debug        = $this->get_option( 'debug' ) == 'yes';
@@ -153,7 +154,7 @@ function woocommerce_gateway_ceca_init() {
                 'terminal_id' => array(
                     'title' => __('Terminal ID'),
                     'type' => 'text',
-                    'description' => __('Identifica al terminal. Facilitado por la caja en el proceso de alta')
+                    'description' => __('Identifica al terminal. Facilitado por la caja en el proceso de alta.')
                 ),
                 'password' => array(
                     'title' => __('Clave de encriptación REAL'),
@@ -164,6 +165,11 @@ function woocommerce_gateway_ceca_init() {
                     'title' => __('Clave de encriptación PRUEBAS'),
                     'type' => 'text',
                     'description' => __('Facilitado por la caja, a diferencia de los demás parámetros la clave cambia del entorno de pruebas al entorno real.')
+                ),
+                'url_nok' => array(
+                    'title' => __('URL NOK'),
+                    'type' => 'text',
+                    'description' => __('...')
                 ),
                 'currency' => array(
                     'title' => __('Tipo Moneda'),
@@ -215,9 +221,7 @@ function woocommerce_gateway_ceca_init() {
                 .'2'
                 .'SHA2'
                 .$this->get_return_url( $order )
-                .$this->get_return_url( $order );
-
-            // $signature_str2 = urlencode($signature_str);
+                .$this->url_nok;
 
             echo "
                 <script>
@@ -233,15 +237,12 @@ function woocommerce_gateway_ceca_init() {
                     //console.log('Página: ".""."');
                     console.log('SHA2: "."SHA2"."');
                     console.log('Url online OK: ".$this->get_return_url( $order )."');
-                    console.log('Url online NOK: ".$this->get_return_url( $order )."');
+                    console.log('Url online NOK: ".$this->url_nok."');
 
                     console.log('Texto a firmar: ".$signature_str."');
                     console.log('Firma: ".hash('sha256', $signature_str)."');
                 </script>
             ";
-
-            //console.log('Texto a firmar (urlencode): ".$signature_str2."');
-            //console.log('Firma (urlencode): ".hash('sha256', $signature_str2)."');
 
             return hash('sha256', $signature_str);
         }
@@ -253,7 +254,7 @@ function woocommerce_gateway_ceca_init() {
             $result['AcquirerBIN']      = $this->acquirer_bin;
             $result['TerminalID']       = $this->terminal_id;
             $result['URL_OK']           = $this->get_return_url( $order );
-            $result['URL_NOK']          = $this->get_return_url( $order );
+            $result['URL_NOK']          = $this->url_nok;
             $result['Firma']            = $this->calculate_sign( $order );
             $result['Cifrado']          = 'SHA2';
             $result['Num_operacion']    = $order->id;
