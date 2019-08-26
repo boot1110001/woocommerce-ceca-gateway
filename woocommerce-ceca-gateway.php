@@ -1,16 +1,15 @@
 <?php
 /*
 Plugin Name: WooCommerce Ceca Gateway
-Plugin URI: http://woothemes.com/woocommerce
+Plugin URI: https://github.com/boot1110001/woocommerce-ceca-gateway
 Description: Extends WooCommerce with an Ceca gateway.
-Version: 1.0
-Author: juanmirod
-Author URI: http://juanmirodriguez.es/
-
-Mods by: inoro (github.com/boot1110001)
-
+Version: 2.0
+Author: inoro
+Author URI: https://github.com/boot1110001
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
+
+Fork of the WooCommerce Ceca Gateway by juanmirod (http://juanmirodriguez.es)
 */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
